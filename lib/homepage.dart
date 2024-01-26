@@ -234,13 +234,13 @@ class BalanceWidget extends StatelessWidget {
             ),
             const Spacer(),
             IconButton(
-              onPressed: () => Navigator.of(context).pushNamed("/kirim"),
-              icon: const Icon(Icons.send),
+              onPressed: () => Navigator.of(context).pushNamed("/topup"),
+              icon: const Icon(Icons.add_circle),
             ),
             const SizedBox(width: 8),
             IconButton(
-              onPressed: () => Navigator.of(context).pushNamed("/topup"),
-              icon: const Icon(Icons.open_in_browser),
+              onPressed: () => Navigator.of(context).pushNamed("/kirim"),
+              icon: const Icon(Icons.send),
             ),
           ],
         ),
