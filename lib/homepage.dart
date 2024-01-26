@@ -44,23 +44,61 @@ class HomePage extends StatelessWidget {
             )
           ];
         },
-        body: const SingleChildScrollView(
-          padding: EdgeInsets.all(16),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              BalanceWidget(),
-              SizedBox(height: 16),
-              HomePageCard(
-                title: "Pengeluaran hari ini",
-                amount: "Rp. 100,000,-",
+              const BalanceWidget(),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(
+                    child: Card(
+                      elevation: 0,
+                      color: Theme.of(context).colorScheme.surfaceVariant,
+                      child: const Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Hari ini"),
+                            Text(
+                              "Rp. 100,000,-",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: Card(
+                      elevation: 0,
+                      color: Theme.of(context).colorScheme.surfaceVariant,
+                      child: const Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Minggu ini"),
+                            Text(
+                              "Rp. 100,000,-",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                ],
               ),
-              SizedBox(height: 8),
-              HomePageCard(
-                title: "Pengeluaran minggu ini",
-                amount: "Rp. 100,000,-",
-              ),
-              SizedBox(height: 24),
-              InvoicesSection()
+              const SizedBox(height: 24),
+              const InvoicesSection()
             ],
           ),
         ),
@@ -131,42 +169,66 @@ class InvoiceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  mutationType == MutationType.addition
-                      ? Icons.add
-                      : Icons.remove,
-                  color: mutationType == MutationType.addition
-                      ? Colors.green
-                      : Colors.red,
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  price,
-                  style: TextStyle(
-                    color: mutationType == MutationType.addition
-                        ? Colors.green
-                        : Colors.red,
-                    fontWeight: FontWeight.bold,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(
+          color: Theme.of(context).colorScheme.outline,
+        ),
+        borderRadius: const BorderRadius.all(Radius.circular(12)),
+      ),
+      clipBehavior: Clip.hardEdge,
+      child: InkWell(
+        onTap: () {},
+        borderRadius: const BorderRadius.all(Radius.circular(12)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Row(
+            children: [
+              Expanded(
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        mutationType == MutationType.addition
+                            ? Icons.add
+                            : Icons.remove,
+                        color: mutationType == MutationType.addition
+                            ? Colors.green
+                            : Colors.red,
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        price,
+                        style: TextStyle(
+                          color: mutationType == MutationType.addition
+                              ? Colors.green
+                              : Colors.red,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const Spacer(),
+                      const Text(
+                        "Bulan lalu",
+                        style: TextStyle(color: Colors.black45),
+                      ),
+                    ],
                   ),
+                  const SizedBox(height: 8),
+                  Text(description),
+                ],
+              )),
+              Container(
+                padding: const EdgeInsets.only(left: 16),
+                child: const Icon(
+                  Icons.chevron_right,
+                  color: Colors.black45,
+                  size: 24,
                 ),
-                const Spacer(),
-                const Text(
-                  "Bulan lalu",
-                  style: TextStyle(color: Colors.black45),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Text(description),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -181,26 +243,8 @@ class HomePageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black.withAlpha(30)),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(8),
-        ),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(title),
-          const Spacer(),
-          Text(
-            amount,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-        ],
-      ),
-    );
+    return const Card();
+    ;
   }
 }
 
