@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kawan/widgets/balance.dart';
+import 'package:kawan/widgets/numpad.dart';
 
 import 'widgets/blinking_cursor.dart';
 
@@ -16,39 +17,124 @@ class TopUpPage extends StatelessWidget {
             pinned: true,
           ),
         ],
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Column(
-                children: [
-                  const TopUpNominal(),
-                  const SizedBox(height: 8),
-                  const Text("Topup ke"),
-                  const SizedBox(height: 8),
-                  BalanceWidget(
-                    createActions: (context) => [],
-                    elevation: 1,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              const Expanded(child: Numpad()),
-              FilledButton(
-                onPressed: () {},
-                child: const Text("Submit"),
-              ),
-            ],
-          ),
+        body: const Padding(
+          padding: EdgeInsets.all(16.0),
+          child: TopUpInput(),
         ),
       ),
     );
   }
 }
 
+class TopUpInput extends StatefulWidget {
+  const TopUpInput({
+    super.key,
+  });
+
+  @override
+  State<TopUpInput> createState() => _TopUpInputState();
+}
+
+class _TopUpInputState extends State<TopUpInput> {
+  int nominal = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Column(
+          children: [
+            TopUpNominal(nominal: nominal),
+            const SizedBox(height: 8),
+            const Text("Topup ke"),
+            const SizedBox(height: 8),
+            BalanceWidget(
+              createActions: (context) => [],
+              elevation: 1,
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        TopUpNumpad(
+          nominal: nominal,
+          updateNominal: (nominal) {
+            setState(() {
+              this.nominal = nominal;
+            });
+          },
+        ),
+        FilledButton(
+          onPressed: () {},
+          child: const Text("Submit"),
+        ),
+      ],
+    );
+  }
+}
+
+class TopUpNumpad extends StatelessWidget {
+  final void Function(int) updateNominal;
+  final int nominal;
+
+  const TopUpNumpad({
+    super.key,
+    required this.nominal,
+    required this.updateNominal,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Numpad(
+      onTap: (action) {
+        switch (action) {
+          case NumpadAction.numberOne:
+            updateNominal(nominal * 10 + 1);
+            break;
+          case NumpadAction.numberTwo:
+            updateNominal(nominal * 10 + 2);
+            break;
+          case NumpadAction.numberThree:
+            updateNominal(nominal * 10 + 3);
+            break;
+          case NumpadAction.numberFour:
+            updateNominal(nominal * 10 + 4);
+            break;
+          case NumpadAction.numberFive:
+            updateNominal(nominal * 10 + 5);
+            break;
+          case NumpadAction.numberSix:
+            updateNominal(nominal * 10 + 6);
+            break;
+          case NumpadAction.numberSeven:
+            updateNominal(nominal * 10 + 7);
+            break;
+          case NumpadAction.numberEight:
+            updateNominal(nominal * 10 + 8);
+            break;
+          case NumpadAction.numberNine:
+            updateNominal(nominal * 10 + 9);
+            break;
+          case NumpadAction.numberZero:
+            updateNominal(nominal * 10);
+            break;
+          case NumpadAction.tripleZero:
+            updateNominal(nominal * 1000);
+            break;
+          case NumpadAction.backspace:
+            updateNominal(nominal ~/ 10);
+            break;
+        }
+      },
+    );
+  }
+}
+
 class TopUpNominal extends StatelessWidget {
+  final int nominal;
+
   const TopUpNominal({
     super.key,
+    required this.nominal,
   });
 
   @override
@@ -69,11 +155,9 @@ class TopUpNominal extends StatelessWidget {
                   style: Theme.of(context).textTheme.labelSmall,
                 ),
                 Row(
-                  // crossAxisAlignment:
-                  //     CrossAxisAlignment.stretch,
                   children: [
                     Text(
-                      "Rp. ",
+                      "Rp. ${nominal.toStringAsFixed(2).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')},-",
                       style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold)
                           .merge(Theme.of(context).textTheme.headlineSmall),
@@ -86,51 +170,6 @@ class TopUpNominal extends StatelessWidget {
             const Spacer(),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class Numpad extends StatelessWidget {
-  const Numpad({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return DefaultTextStyle.merge(
-      style: Theme.of(context)
-          .textTheme
-          .bodyMedium!
-          .merge(const TextStyle(fontSize: 24)),
-      child: GridView.count(
-        crossAxisCount: 3,
-        mainAxisSpacing: 8,
-        crossAxisSpacing: 8,
-        childAspectRatio: 3 / 2,
-        children: [
-          ...[
-            ...[1, 2, 3, 4, 5, 6, 7, 8, 9].map(
-              (e) => Text(
-                e.toString(),
-                style: const TextStyle(fontSize: 24),
-              ),
-            ),
-            const Text("000", style: TextStyle(fontSize: 20)),
-            const Text("0", style: TextStyle(fontSize: 24)),
-            const Icon(Icons.arrow_back)
-          ].map((e) {
-            return ElevatedButton(
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all(
-                  const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
-                  ),
-                ),
-              ),
-              onPressed: () {},
-              child: e,
-            );
-          }),
-        ],
       ),
     );
   }
