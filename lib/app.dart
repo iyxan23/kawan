@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kawan/bloc/mutations/mutations_bloc.dart';
+import 'package:kawan/repository/mutations.dart';
 
-import 'repository/mutations.dart';
 import 'homepage.dart';
 import 'sendpage.dart';
 import 'topuppage.dart';
@@ -28,19 +29,24 @@ class AppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Kawan',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 98, 20, 223),
-        ),
-        useMaterial3: true,
+    return BlocProvider(
+      create: (context) => MutationsBloc(
+        mutationsRepository: context.read<MutationsRepository>(),
       ),
-      routes: {
-        "/": (ctx) => const HomePage(),
-        "/kirim": (ctx) => const SendPage(),
-        "/topup": (ctx) => const TopUpPage(),
-      },
+      child: MaterialApp(
+        title: 'Kawan',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 98, 20, 223),
+          ),
+          useMaterial3: true,
+        ),
+        routes: {
+          "/": (ctx) => const HomePage(),
+          "/kirim": (ctx) => const SendPage(),
+          "/topup": (ctx) => const TopUpPage(),
+        },
+      ),
     );
   }
 }
