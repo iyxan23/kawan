@@ -4,7 +4,7 @@ import 'package:kawan/repository/mutations_generator.dart';
 
 const onePage = 10;
 
-class MutationsRam extends MutationsRepository {
+class MutationsRam extends MutationsRepository<int> {
   late MutationsDb db;
 
   MutationsRam({MutationsDb? db}) {
@@ -25,21 +25,37 @@ class MutationsRam extends MutationsRepository {
   }
 
   @override
-  Future<int> dailyAggregate() {
-    // TODO: implement dailyAggregate
-    throw UnimplementedError();
+  Future<Paged<int, List<Mutation>>> getMutations(cursor) {
+    return Future.value(Paged(
+      cursor: (cursor ?? -1) + 1,
+      data: db.mutations.sublist(cursor ?? -1 + 1, onePage),
+    ));
   }
 
   @override
-  Future<Paged<dynamic, List<Mutation>>> getMutations(cursor) {
-    // TODO: implement getMutations
-    throw UnimplementedError();
+  Future<int> dailyAggregate() {
+    return Future.value(
+      db.mutations
+          .where((element) => element.created.day == DateTime.now().day)
+          .map((e) => e.amount)
+          .reduce((value, element) => value + element),
+    );
   }
 
   @override
   Future<int> weeklyAggregate() {
-    // TODO: implement weeklyAggregate
-    throw UnimplementedError();
+    return Future.value(
+      db.mutations
+          .where(
+            (element) => element.created.isAfter(
+              DateTime.now().subtract(
+                const Duration(days: 7),
+              ),
+            ),
+          )
+          .map((e) => e.amount)
+          .reduce((value, element) => value + element),
+    );
   }
 }
 

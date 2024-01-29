@@ -2,7 +2,7 @@ import 'package:kawan/models/mutations.dart';
 
 abstract class MutationsRepository<MutationCursor> {
   Future<Paged<MutationCursor, List<Mutation>>> getMutations(
-    MutationCursor cursor,
+    MutationCursor? cursor,
   );
 
   Future<int> aggregateBalance();
