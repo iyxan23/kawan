@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kawan/bloc/mutations/mutations_bloc.dart';
 import 'package:kawan/bloc/mutations/mutations_state.dart';
 import 'package:kawan/utils.dart';
+import 'package:relative_time/relative_time.dart';
 
 import 'models/mutations.dart';
 import 'widgets/balance.dart';
@@ -150,15 +151,19 @@ class MutationCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MutationsBloc, MutationsState>(builder: (context, state) {
+    return BlocBuilder<MutationsBloc, MutationsState>(
+        builder: (context, state) {
       return Column(
-        children: [...state.mutations.map((mutation) {
-          return MutationCard(
-            price: "Rp. ${formatIDR(mutation.amount)},-",
-            mutationType: mutation.mutationType,
-            description: mutation.description,
-          );
-        })],
+        children: [
+          ...state.mutations.reversed.map((mutation) {
+            return MutationCard(
+              price: "Rp. ${formatIDR(mutation.amount)},-",
+              mutationType: mutation.mutationType,
+              description: mutation.description,
+              date: mutation.created,
+            );
+          })
+        ],
       );
     });
   }
@@ -168,12 +173,14 @@ class MutationCard extends StatelessWidget {
   final String price;
   final MutationType mutationType;
   final String description;
+  final DateTime date;
 
   const MutationCard(
       {super.key,
       required this.price,
       required this.mutationType,
-      required this.description});
+      required this.description,
+      required this.date});
 
   @override
   Widget build(BuildContext context) {
@@ -218,9 +225,9 @@ class MutationCard extends StatelessWidget {
                         ),
                       ),
                       const Spacer(),
-                      const Text(
-                        "Bulan lalu",
-                        style: TextStyle(color: Colors.black45),
+                      Text(
+                        RelativeTime(context).format(date),
+                        style: const TextStyle(color: Colors.black45),
                       ),
                     ],
                   ),
