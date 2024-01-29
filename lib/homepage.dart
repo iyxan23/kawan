@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'models/mutations.dart';
+import 'widgets/balance.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -48,7 +51,19 @@ class HomePage extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              const BalanceWidget(),
+              BalanceWidget(
+                createActions: (context) => [
+                  IconButton(
+                    onPressed: () => Navigator.of(context).pushNamed("/topup"),
+                    icon: const Icon(Icons.add_circle),
+                  ),
+                  const SizedBox(width: 8),
+                  IconButton(
+                    onPressed: () => Navigator.of(context).pushNamed("/kirim"),
+                    icon: const Icon(Icons.send),
+                  ),
+                ],
+              ),
               const SizedBox(height: 8),
               Row(
                 children: [
@@ -150,11 +165,6 @@ class InvoicesSection extends StatelessWidget {
   }
 }
 
-enum MutationType {
-  addition,
-  deduction,
-}
-
 class InvoiceCard extends StatelessWidget {
   final String price;
   final MutationType mutationType;
@@ -227,109 +237,6 @@ class InvoiceCard extends StatelessWidget {
                   size: 24,
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class HomePageCard extends StatelessWidget {
-  final String title;
-  final String amount;
-
-  const HomePageCard({super.key, required this.title, required this.amount});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Card();
-    ;
-  }
-}
-
-class BalanceWidget extends StatelessWidget {
-  const BalanceWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Row(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "SALDO",
-                  style: Theme.of(context).textTheme.labelSmall,
-                ),
-                Text(
-                  "Rp. 1,500,000,-",
-                  style:
-                      const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)
-                          .merge(Theme.of(context).textTheme.headlineSmall),
-                )
-              ],
-            ),
-            const Spacer(),
-            IconButton(
-              onPressed: () => Navigator.of(context).pushNamed("/topup"),
-              icon: const Icon(Icons.add_circle),
-            ),
-            const SizedBox(width: 8),
-            IconButton(
-              onPressed: () => Navigator.of(context).pushNamed("/kirim"),
-              icon: const Icon(Icons.send),
-            ),
-          ],
-        ),
-      ),
-    );
-    // return Container(
-    //   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-    //   decoration: ShapeDecoration(
-    //     color: Theme.of(context).colorScheme.primaryContainer,
-    //     shape: const RoundedRectangleBorder(
-    //       borderRadius: BorderRadius.all(
-    //         Radius.circular(8),
-    //       ),
-    //     ),
-    //   ),
-    //   child: Row,
-    // );
-  }
-}
-
-class BalanceAction extends StatelessWidget {
-  final String title;
-  final VoidCallback onTap;
-  final IconData icon;
-
-  const BalanceAction(
-      {super.key,
-      required this.title,
-      required this.onTap,
-      required this.icon});
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.white,
-      borderRadius: const BorderRadius.all(Radius.circular(8)),
-      shadowColor: Colors.black.withAlpha(50),
-      child: InkWell(
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          child: Column(
-            children: [
-              Icon(icon),
-              Text(title),
             ],
           ),
         ),
