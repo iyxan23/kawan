@@ -32,7 +32,11 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.3
+  flutter_localizations:
+    sdk: flutter
   flutter_svg: ^2.0.9
+  intl: any
+  relative_time: ^5.0.0
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:kawan/bloc/mutations/mutations_bloc.dart';
+import 'package:kawan/bloc/mutations/mutations_events.dart';
 import 'package:kawan/repository/mutations.dart';
+import 'package:relative_time/relative_time.dart';
 
 import 'homepage.dart';
 import 'sendpage.dart';
@@ -32,8 +35,21 @@ class AppView extends StatelessWidget {
     return BlocProvider(
       create: (context) => MutationsBloc(
         mutationsRepository: context.read<MutationsRepository>(),
-      ),
+      )
+        ..add(const LoadMutations())
+        ..add(const LoadAggregate())
+        ..add(const LoadDailyAggregate())
+        ..add(const LoadWeeklyAggregate()),
       child: MaterialApp(
+        localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+          RelativeTimeLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('id'),
+        ],
         title: 'Kawan',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
