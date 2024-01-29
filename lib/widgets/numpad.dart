@@ -39,13 +39,13 @@ class Numpad extends StatelessWidget {
 
 List<(Widget, VoidCallback)> createButtons(Function(NumpadAction) onTap) {
   return [
-    ...[1, 2, 3, 4, 5, 6, 7, 8, 9].map(
+    ...(List.generate(9, (i) => (i + 1, NumpadAction.values[i]))).map(
       (e) => (
         Text(
-          e.toString(),
+          e.$1.toString(),
           style: const TextStyle(fontSize: 24),
         ),
-        () => onTap(NumpadAction.numberOne)
+        () => onTap(e.$2)
       ),
     ),
     (
