@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kawan/bloc/mutations/mutations_events.dart';
 import 'package:kawan/bloc/mutations/mutations_state.dart';
+import 'package:kawan/models/mutations.dart';
 import 'package:kawan/repository/mutations.dart';
 
 class MutationsBloc extends Bloc<MutationsEvents, MutationsState> {
@@ -13,7 +14,8 @@ class MutationsBloc extends Bloc<MutationsEvents, MutationsState> {
             balanceAggregate: 0,
             balanceDailyAggregate: 0,
             balanceWeeklyAggregate: 0)) {
-    on<MutationAdded>(_onMutationAdded);
+    on<AdditionMutationAdded>(_onAdditionMutationAdded);
+    on<DeductionMutationAdded>(_onDeductionMutationAdded);
     on<LoadMutations>(_onLoadMutations);
 
     on<LoadAggregate>(_onLoadAggregate);
@@ -23,10 +25,36 @@ class MutationsBloc extends Bloc<MutationsEvents, MutationsState> {
 
   final MutationsRepository _mutationsRepository;
 
-  void _onMutationAdded(MutationAdded event, Emitter<MutationsState> emit) {
+  void _onAdditionMutationAdded(
+      AdditionMutationAdded event, Emitter<MutationsState> emit) {
     emit(
       state.copyWith(
-        mutations: () => [...state.mutations, event.mutation],
+        mutations: () => [
+          ...state.mutations,
+          Mutation(
+            amount: event.nominal,
+            description: event.description,
+            mutationType: MutationType.addition,
+            created: DateTime.now(),
+          )
+        ],
+      ),
+    );
+  }
+
+  void _onDeductionMutationAdded(
+      DeductionMutationAdded event, Emitter<MutationsState> emit) {
+    emit(
+      state.copyWith(
+        mutations: () => [
+          ...state.mutations,
+          Mutation(
+            amount: event.nominal,
+            description: event.description,
+            mutationType: MutationType.deduction,
+            created: DateTime.now(),
+          )
+        ],
       ),
     );
   }

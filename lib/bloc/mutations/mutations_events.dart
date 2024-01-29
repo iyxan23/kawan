@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:kawan/models/mutations.dart';
 
 class MutationsEvents extends Equatable {
   const MutationsEvents();
@@ -8,12 +7,26 @@ class MutationsEvents extends Equatable {
   List<Object?> get props => [];
 }
 
-final class MutationAdded extends MutationsEvents {
-  final Mutation mutation;
-  const MutationAdded(this.mutation);
+final class AdditionMutationAdded extends MutationsEvents {
+  final int nominal;
+  final String description;
+
+  const AdditionMutationAdded(
+      {required this.nominal, required this.description});
 
   @override
-  List<Object?> get props => [mutation];
+  List<Object?> get props => [nominal, description];
+}
+
+final class DeductionMutationAdded extends MutationsEvents {
+  final int nominal;
+  final String description;
+
+  const DeductionMutationAdded(
+      {required this.nominal, required this.description});
+
+  @override
+  List<Object?> get props => [nominal, description];
 }
 
 final class LoadMutations extends MutationsEvents {
