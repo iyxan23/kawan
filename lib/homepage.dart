@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kawan/bloc/mutations/mutations_bloc.dart';
+import 'package:kawan/bloc/mutations/mutations_state.dart';
+import 'package:kawan/utils.dart';
 
 import 'models/mutations.dart';
 import 'widgets/balance.dart';
@@ -113,7 +117,7 @@ class HomePage extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 24),
-              const InvoicesSection()
+              const MutationsSection()
             ],
           ),
         ),
@@ -122,8 +126,8 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class InvoicesSection extends StatelessWidget {
-  const InvoicesSection({super.key});
+class MutationsSection extends StatelessWidget {
+  const MutationsSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -135,42 +139,37 @@ class InvoicesSection extends StatelessWidget {
           style: Theme.of(context).textTheme.titleLarge,
         ),
         const SizedBox(height: 12),
-        const InvoiceCard(
-          price: "Rp. 12,000,-",
-          mutationType: MutationType.deduction,
-          description: "Beli Kopi",
-        ),
-        const InvoiceCard(
-          price: "Rp. 500,000,-",
-          mutationType: MutationType.addition,
-          description: "Dari emak",
-        ),
-        const InvoiceCard(
-          price: "Rp. 17,500,-",
-          mutationType: MutationType.deduction,
-          description: "Belanja Mie",
-        ),
-        const InvoiceCard(
-          price: "Rp. 100,000,-",
-          mutationType: MutationType.deduction,
-          description: "Bayar Kos",
-        ),
-        const InvoiceCard(
-          price: "Rp. 700,000,-",
-          mutationType: MutationType.addition,
-          description: "Gaji part time",
-        ),
+        const MutationCards(),
       ],
     );
   }
 }
 
-class InvoiceCard extends StatelessWidget {
+class MutationCards extends StatelessWidget {
+  const MutationCards({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<MutationsBloc, MutationsState>(builder: (context, state) {
+      return Column(
+        children: [...state.mutations.map((mutation) {
+          return MutationCard(
+            price: "Rp. ${formatIDR(mutation.amount)},-",
+            mutationType: mutation.mutationType,
+            description: mutation.description,
+          );
+        })],
+      );
+    });
+  }
+}
+
+class MutationCard extends StatelessWidget {
   final String price;
   final MutationType mutationType;
   final String description;
 
-  const InvoiceCard(
+  const MutationCard(
       {super.key,
       required this.price,
       required this.mutationType,
