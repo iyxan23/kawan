@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kawan/bloc/mutations/mutations_bloc.dart';
+import 'package:kawan/bloc/mutations/mutations_state.dart';
+import 'package:kawan/utils.dart';
 
 class BalanceWidget extends StatelessWidget {
   final List<Widget> Function(BuildContext) createActions;
@@ -24,11 +28,13 @@ class BalanceWidget extends StatelessWidget {
                     "SALDO",
                     style: Theme.of(context).textTheme.labelSmall,
                   ),
-                  Text(
-                    "Rp. 1,500,000,-",
-                    style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold)
-                        .merge(Theme.of(context).textTheme.headlineSmall),
+                  BlocBuilder<MutationsBloc, MutationsState>(
+                    builder: (context, state) => Text(
+                      "Rp. ${formatIDR(state.balanceAggregate ?? 0)}",
+                      style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold)
+                          .merge(Theme.of(context).textTheme.headlineSmall),
+                    ),
                   )
                 ],
               ),
