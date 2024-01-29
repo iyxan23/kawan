@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kawan/bloc/mutations/mutations_bloc.dart';
+import 'package:kawan/bloc/mutations/mutations_events.dart';
 import 'package:kawan/widgets/balance.dart';
 import 'package:kawan/widgets/numpad.dart';
 
@@ -37,6 +40,7 @@ class TopUpInput extends StatefulWidget {
 
 class _TopUpInputState extends State<TopUpInput> {
   int nominal = 0;
+  String description = "Dari emak";
 
   @override
   Widget build(BuildContext context) {
@@ -55,19 +59,55 @@ class _TopUpInputState extends State<TopUpInput> {
           ],
         ),
         const SizedBox(height: 16),
-        TopUpNumpad(
-          nominal: nominal,
-          updateNominal: (nominal) {
-            setState(() {
-              this.nominal = nominal;
-            });
-          },
+        Expanded(
+          child: TopUpNumpad(
+            nominal: nominal,
+            updateNominal: (nominal) {
+              setState(() {
+                this.nominal = nominal;
+              });
+            },
+          ),
         ),
         FilledButton(
-          onPressed: () {},
+          onPressed: onSubmit,
           child: const Text("Submit"),
         ),
       ],
+    );
+  }
+
+  void onSubmit() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Masukkan deskripsi"),
+          content: TextField(
+            onChanged: (value) {
+              setState(() {
+                description = value;
+              });
+            },
+          ),
+          actions: [
+            TextButton(
+              child: const Text("Top Up"),
+              onPressed: () {
+                final mutationsBloc = context.read<MutationsBloc>();
+                mutationsBloc.add(
+                  AdditionMutationAdded(
+                    nominal: nominal,
+                    description: description,
+                  ),
+                );
+
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
