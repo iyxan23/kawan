@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kawan/bloc/mutations/mutations_bloc.dart';
 import 'package:kawan/bloc/mutations/mutations_events.dart';
+import 'package:kawan/utils.dart';
 import 'package:kawan/widgets/balance.dart';
 import 'package:kawan/widgets/numpad.dart';
 
@@ -197,7 +198,7 @@ class TopUpNominal extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      "Rp. ${nominal.toStringAsFixed(2).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')},-",
+                      "Rp. ${formatIDR(nominal)},-",
                       style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold)
                           .merge(Theme.of(context).textTheme.headlineSmall),
