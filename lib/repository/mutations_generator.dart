@@ -18,17 +18,20 @@ const descriptions = [
 List<Mutation> generateMutations(int count) {
   var rng = Random();
   List<Mutation> mutations = [];
+  DateTime date = DateTime.now();
 
   for (int i = 0; i < count; i++) {
+    date = date.subtract(Duration(hours: rng.nextInt(48)));
     mutations.insert(
       mutations.length,
       Mutation(
-        amount: rng.nextInt(1000000), // random amount up to 1,000,000
+        amount: int.parse(
+            "${rng.nextInt(1000).toString()}${'0' * (rng.nextInt(2) + 3)}"),
         description: descriptions[
             rng.nextInt(descriptions.length)], // random description
         mutationType: MutationType.values[
             rng.nextInt(MutationType.values.length)], // random mutation type
-        created: DateTime.now(),
+        created: date,
       ),
     );
   }
