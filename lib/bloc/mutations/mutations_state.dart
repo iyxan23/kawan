@@ -38,5 +38,11 @@ class MutationsState<Cursor> extends Equatable {
   }
 
   @override
-  List<Object?> get props => [mutations, cursor];
+  List<Object?> get props => [
+        mutations,
+        cursor,
+        balanceAggregate,
+        balanceDailyAggregate,
+        balanceWeeklyAggregate
+      ];
 }
