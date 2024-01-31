@@ -73,46 +73,28 @@ class HomePage extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: Card(
-                      elevation: 0,
-                      color: Theme.of(context).colorScheme.surfaceVariant,
-                      child: const Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Hari ini"),
-                            Text(
-                              "Rp. 100,000,-",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
-                            ),
-                          ],
-                        ),
-                      ),
+                    child: BlocBuilder<MutationsBloc, MutationsState>(
+                      builder: (context, state) {
+                        return BalanceGlanceCard(
+                          title: "Hari ini",
+                          value: state.balanceDailyAggregate != null
+                              ? "Rp. ${formatIDR(state.balanceDailyAggregate!)},-"
+                              : "Loading",
+                        );
+                      },
                     ),
                   ),
                   const SizedBox(width: 4),
                   Expanded(
-                    child: Card(
-                      elevation: 0,
-                      color: Theme.of(context).colorScheme.surfaceVariant,
-                      child: const Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Minggu ini"),
-                            Text(
-                              "Rp. 100,000,-",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
-                            ),
-                          ],
-                        ),
-                      ),
+                    child: BlocBuilder<MutationsBloc, MutationsState>(
+                      builder: (context, state) {
+                        return BalanceGlanceCard(
+                          title: "Minggu ini",
+                          value: state.balanceWeeklyAggregate != null
+                              ? "Rp. ${formatIDR(state.balanceWeeklyAggregate!)},-"
+                              : "Loading",
+                        );
+                      },
                     ),
                   )
                 ],
@@ -121,6 +103,35 @@ class HomePage extends StatelessWidget {
               const MutationsSection()
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class BalanceGlanceCard extends StatelessWidget {
+  final String title;
+  final String value;
+
+  const BalanceGlanceCard(
+      {super.key, required this.title, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 0,
+      color: Theme.of(context).colorScheme.surfaceVariant,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title),
+            Text(
+              value,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+          ],
         ),
       ),
     );
@@ -155,7 +166,7 @@ class MutationCards extends StatelessWidget {
         builder: (context, state) {
       return Column(
         children: [
-          ...state.mutations.reversed.map((mutation) {
+          ...state.mutations.map((mutation) {
             return MutationCard(
               price: "Rp. ${formatIDR(mutation.amount)},-",
               mutationType: mutation.mutationType,
