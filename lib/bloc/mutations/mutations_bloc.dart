@@ -30,30 +30,32 @@ class MutationsBloc extends Bloc<MutationsEvents, MutationsState> {
     emit(
       state.copyWith(
         mutations: () => [
-          ...state.mutations,
           Mutation(
             amount: event.nominal,
             description: event.description,
             mutationType: MutationType.addition,
             created: DateTime.now(),
-          )
+          ),
+          ...state.mutations,
         ],
       ),
     );
   }
 
   void _onDeductionMutationAdded(
-      DeductionMutationAdded event, Emitter<MutationsState> emit) {
+    DeductionMutationAdded event,
+    Emitter<MutationsState> emit,
+  ) {
     emit(
       state.copyWith(
         mutations: () => [
-          ...state.mutations,
           Mutation(
             amount: event.nominal,
             description: event.description,
             mutationType: MutationType.deduction,
             created: DateTime.now(),
-          )
+          ),
+          ...state.mutations,
         ],
       ),
     );
