@@ -63,8 +63,8 @@ class HomePage extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   IconButton(
-                    onPressed: () => Navigator.of(context).pushNamed("/kirim"),
-                    icon: const Icon(Icons.send),
+                    onPressed: () => Navigator.of(context).pushNamed("/pay"),
+                    icon: const Icon(Icons.qr_code_scanner),
                   ),
                 ],
               ),

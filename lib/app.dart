@@ -4,7 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:kawan/bloc/mutations/mutations_bloc.dart';
 import 'package:kawan/bloc/mutations/mutations_events.dart';
 import 'package:kawan/pages/homepage.dart';
-import 'package:kawan/pages/sendpage.dart';
+import 'package:kawan/pages/paypage.dart';
 import 'package:kawan/pages/topuppage.dart';
 import 'package:kawan/repository/mutations.dart';
 import 'package:relative_time/relative_time.dart';
@@ -54,7 +54,7 @@ class AppView extends StatelessWidget {
         ),
         routes: {
           "/": (ctx) => const HomePage(),
-          "/kirim": (ctx) => const SendPage(),
+          "/pay": (ctx) => const PayPage(),
           "/topup": (ctx) => const TopUpPage(),
         },
       ),

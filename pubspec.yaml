@@ -37,6 +37,8 @@ dependencies:
   flutter_svg: ^2.0.9
   intl: any
   relative_time: ^5.0.0
+  mobile_scanner: ^3.5.5
+  pretty_qr_code: ^3.0.0
 
 dev_dependencies:
   flutter_test:
