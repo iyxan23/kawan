@@ -3,12 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:kawan/bloc/mutations/mutations_bloc.dart';
 import 'package:kawan/bloc/mutations/mutations_events.dart';
+import 'package:kawan/pages/homepage.dart';
+import 'package:kawan/pages/sendpage.dart';
+import 'package:kawan/pages/topuppage.dart';
 import 'package:kawan/repository/mutations.dart';
 import 'package:relative_time/relative_time.dart';
-
-import 'homepage.dart';
-import 'sendpage.dart';
-import 'topuppage.dart';
 
 class App extends StatelessWidget {
   final MutationsRepository mutationsRepository;

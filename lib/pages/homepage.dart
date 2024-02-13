@@ -3,11 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kawan/bloc/mutations/mutations_bloc.dart';
 import 'package:kawan/bloc/mutations/mutations_state.dart';
+import 'package:kawan/models/mutations.dart';
 import 'package:kawan/utils.dart';
+import 'package:kawan/widgets/balance.dart';
 import 'package:relative_time/relative_time.dart';
-
-import 'models/mutations.dart';
-import 'widgets/balance.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

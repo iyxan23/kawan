@@ -11,7 +11,7 @@ class SendPage extends StatelessWidget {
           child: ElevatedButton(
         onPressed: () {},
         child: const Text("Kirim"),
-      )),
+      ),),
     );
   }
 }

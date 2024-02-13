@@ -4,9 +4,8 @@ import 'package:kawan/bloc/mutations/mutations_bloc.dart';
 import 'package:kawan/bloc/mutations/mutations_events.dart';
 import 'package:kawan/utils.dart';
 import 'package:kawan/widgets/balance.dart';
+import 'package:kawan/widgets/blinking_cursor.dart';
 import 'package:kawan/widgets/numpad.dart';
-
-import 'widgets/blinking_cursor.dart';
 
 class TopUpPage extends StatelessWidget {
   const TopUpPage({super.key});
