@@ -11,5 +11,14 @@ class AppObserver extends BlocObserver {
   @override
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
     super.onChange(bloc, change);
+
+    print("change: $change");
+  }
+
+  @override
+  void onEvent(Bloc bloc, Object? event) {
+    super.onEvent(bloc, event);
+
+    print("event: $event");
   }
 }

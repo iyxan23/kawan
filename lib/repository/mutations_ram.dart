@@ -16,45 +16,61 @@ class MutationsRam extends MutationsRepository<int> {
   }
 
   @override
+  Future<void> pushMutation(Mutation mutation) {
+    db.mutations.insert(0, mutation);
+    return Future.value();
+  }
+
+  @override
   Future<int> aggregateBalance() {
+    print("[db] aggregate balance called");
     return Future.value(
-      db.mutations
-          .map((m) => m.amount)
-          .reduce((value, element) => value + element),
+      db.mutations.isEmpty
+          ? 0
+          : db.mutations
+              .map((m) => m.amount)
+              .reduce((value, element) => value + element),
     );
   }
 
   @override
-  Future<Paged<int, List<Mutation>>> getMutations(cursor) {
-    return Future.value(Paged(
-      cursor: (cursor ?? -1) + 1,
-      data: db.mutations.sublist(cursor ?? -1 + 1, onePage),
-    ));
+  Future<List<Mutation>> getMutations() {
+    return Future.value(db.mutations);
   }
 
   @override
   Future<int> dailyAggregate() {
+    print("[db] daily aggregate called");
+    final mutationsToday = db.mutations.where(
+      (element) => element.created.day == DateTime.now().day,
+    );
+
     return Future.value(
-      db.mutations
-          .where((element) => element.created.day == DateTime.now().day)
-          .map((e) => e.amount)
-          .reduce((value, element) => value + element),
+      mutationsToday.isEmpty
+          ? 0
+          : mutationsToday
+              .map((e) => e.amount)
+              .reduce((value, element) => value + element),
     );
   }
 
   @override
   Future<int> weeklyAggregate() {
+    print("[db] weekly aggregate called");
+    final mutationsThisWeek = db.mutations.where(
+      (element) => element.created.isAfter(
+        DateTime.now().subtract(
+          const Duration(days: 7),
+        ),
+      ),
+    );
+
     return Future.value(
-      db.mutations
-          .where(
-            (element) => element.created.isAfter(
-              DateTime.now().subtract(
-                const Duration(days: 7),
-              ),
-            ),
-          )
-          .map((e) => e.amount)
-          .reduce((value, element) => value + element),
+      mutationsThisWeek.isEmpty
+          ? 0
+          : mutationsThisWeek
+              .map((e) => e.amount)
+              .reduce((value, element) => value + element),
     );
   }
 }

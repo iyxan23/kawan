@@ -1,4 +1,6 @@
-class Mutation {
+import 'package:equatable/equatable.dart';
+
+class Mutation extends Equatable {
   final int amount;
   final String description;
   final MutationType mutationType;
@@ -9,6 +11,9 @@ class Mutation {
       required this.description,
       required this.mutationType,
       required this.created});
+
+  @override
+  List<Object?> get props => [amount, description, mutationType, created];
 }
 
 enum MutationType {

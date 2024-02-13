@@ -172,7 +172,7 @@ class MutationCards extends StatelessWidget {
               description: mutation.description,
               date: mutation.created,
             );
-          })
+          }),
         ],
       );
     });

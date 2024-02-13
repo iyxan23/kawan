@@ -34,11 +34,7 @@ class AppView extends StatelessWidget {
     return BlocProvider(
       create: (context) => MutationsBloc(
         mutationsRepository: context.read<MutationsRepository>(),
-      )
-        ..add(const LoadMutations())
-        ..add(const LoadAggregate())
-        ..add(const LoadDailyAggregate())
-        ..add(const LoadWeeklyAggregate()),
+      )..add(const LoadMutations()),
       child: MaterialApp(
         localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
           RelativeTimeLocalizations.delegate,

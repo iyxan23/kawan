@@ -10,7 +10,6 @@ class MutationsBloc extends Bloc<MutationsEvents, MutationsState> {
   })  : _mutationsRepository = mutationsRepository,
         super(const MutationsState(
             mutations: [],
-            cursor: null,
             balanceAggregate: 0,
             balanceDailyAggregate: 0,
             balanceWeeklyAggregate: 0)) {
@@ -25,51 +24,49 @@ class MutationsBloc extends Bloc<MutationsEvents, MutationsState> {
 
   final MutationsRepository _mutationsRepository;
 
-  void _onAdditionMutationAdded(
-      AdditionMutationAdded event, Emitter<MutationsState> emit) {
-    emit(
-      state.copyWith(
-        mutations: () => [
-          Mutation(
-            amount: event.nominal,
-            description: event.description,
-            mutationType: MutationType.addition,
-            created: DateTime.now(),
-          ),
-          ...state.mutations,
-        ],
+  Future<void> _onAdditionMutationAdded(
+      AdditionMutationAdded event, Emitter<MutationsState> emit) async {
+    await _mutationsRepository.pushMutation(
+      Mutation(
+        amount: event.nominal,
+        description: event.description,
+        mutationType: MutationType.addition,
+        created: DateTime.now(),
       ),
     );
+
+    add(const LoadMutations());
   }
 
-  void _onDeductionMutationAdded(
+  Future<void> _onDeductionMutationAdded(
     DeductionMutationAdded event,
     Emitter<MutationsState> emit,
-  ) {
-    emit(
-      state.copyWith(
-        mutations: () => [
-          Mutation(
-            amount: event.nominal,
-            description: event.description,
-            mutationType: MutationType.deduction,
-            created: DateTime.now(),
-          ),
-          ...state.mutations,
-        ],
+  ) async {
+    await _mutationsRepository.pushMutation(
+      Mutation(
+        amount: event.nominal,
+        description: event.description,
+        mutationType: MutationType.deduction,
+        created: DateTime.now(),
       ),
     );
+
+    add(const LoadMutations());
   }
 
   Future<void> _onLoadMutations(
       LoadMutations event, Emitter<MutationsState> emit) async {
-    final mutations = await _mutationsRepository.getMutations(state.cursor);
+    final mutations = await _mutationsRepository.getMutations();
+
     emit(
       state.copyWith(
-        mutations: () => [...state.mutations, ...mutations.data],
-        cursor: () => mutations.cursor,
+        mutations: () => mutations,
       ),
     );
+
+    add(const LoadAggregate());
+    add(const LoadDailyAggregate());
+    add(const LoadWeeklyAggregate());
   }
 
   Future<void> _onLoadAggregate(

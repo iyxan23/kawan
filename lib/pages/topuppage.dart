@@ -84,6 +84,10 @@ class _TopUpInputState extends State<TopUpInput> {
         return AlertDialog(
           title: const Text("Masukkan deskripsi"),
           content: TextField(
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: "Deskripsi",
+            ),
             onChanged: (value) {
               setState(() {
                 description = value;
@@ -95,6 +99,7 @@ class _TopUpInputState extends State<TopUpInput> {
               child: const Text("Top Up"),
               onPressed: () {
                 final mutationsBloc = context.read<MutationsBloc>();
+
                 mutationsBloc.add(
                   AdditionMutationAdded(
                     nominal: nominal,
@@ -102,7 +107,18 @@ class _TopUpInputState extends State<TopUpInput> {
                   ),
                 );
 
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(); // close the dialog
+                Navigator.of(context).pop(); // go back to the previous page
+
+                setState(() {
+                  nominal = 0;
+                });
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Top up berhasil"),
+                  ),
+                );
               },
             ),
           ],
